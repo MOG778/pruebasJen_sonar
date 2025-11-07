@@ -1,33 +1,43 @@
 pipeline {
     agent any
 
+    environment {
+        SONARQUBE = credentials('sonar-token')
+    }
+
+    tools {
+        sonarScanner 'SonarScanner'
+    }
+
     stages {
-        stage('Inicio') {
+        stage('Checkout') {
             steps {
-                echo '🔥 Jenkins está ejecutando correctamente el pipeline'
+                git branch: 'main', url: 'https://github.com/MOG778/pruebasJen_sonar.git'
             }
         }
 
-        stage('Prueba de Shell') {
+        stage('Analizar con SonarQube') {
             steps {
-                sh 'echo "🧠 Esto se está ejecutando dentro del contenedor Jenkins"'
-                sh 'uname -a'
-            }
-        }
-
-        stage('Listar archivos del workspace') {
-            steps {
-                sh 'ls -la'
+                echo "🚀 Ejecutando análisis SonarQube..."
+                withSonarQubeEnv('SonarQube') {
+                    sh '''
+                        sonar-scanner \
+                        -Dsonar.projectKey=pruebasJen_sonar \
+                        -Dsonar.sources=. \
+                        -Dsonar.host.url=$SONAR_HOST_URL \
+                        -Dsonar.login=$SONARQUBE
+                    '''
+                }
             }
         }
     }
 
     post {
         success {
-            echo '✅ Pipeline ejecutado con éxito'
+            echo "✅ Análisis enviado correctamente a SonarQube"
         }
         failure {
-            echo '❌ Algo falló, revisa los logs'
+            echo "❌ Falló el análisis SonarQube, revisa los logs"
         }
     }
 }
