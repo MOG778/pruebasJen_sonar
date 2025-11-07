@@ -2,15 +2,12 @@ pipeline {
     agent any
 
     tools {
-        // Asegúrate de tener estas herramientas configuradas en Jenkins (Manage Jenkins -> Global Tool Configuration)
         maven 'Maven3'
         jdk 'JDK17'
-        hudson.plugins.sonar.SonarRunnerInstallation 'SonarScanner'
     }
 
     environment {
-        // Nombre del servidor configurado en Jenkins -> Manage Jenkins -> Configure System -> SonarQube Servers
-        SONARQUBE_ENV = 'SonarQube'
+        SONARQUBE_ENV = 'SonarQube' // Nombre del servidor Sonar configurado en Jenkins
     }
 
     stages {
