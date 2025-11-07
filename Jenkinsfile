@@ -1,43 +1,47 @@
 pipeline {
     agent any
 
-    environment {
-        SONARQUBE = credentials('sonar-token')
+    tools {
+        // Asegúrate de tener estas herramientas configuradas en Jenkins (Manage Jenkins -> Global Tool Configuration)
+        maven 'Maven3'
+        jdk 'JDK17'
+        hudson.plugins.sonar.SonarRunnerInstallation 'SonarScanner'
     }
 
-    tools {
-        sonarScanner 'SonarScanner'
+    environment {
+        // Nombre del servidor configurado en Jenkins -> Manage Jenkins -> Configure System -> SonarQube Servers
+        SONARQUBE_ENV = 'SonarQube'
     }
 
     stages {
         stage('Checkout') {
             steps {
-                git branch: 'main', url: 'https://github.com/MOG778/pruebasJen_sonar.git'
+                git 'https://github.com/MOG778/pruebasJen_sonar.git'
             }
         }
 
-        stage('Analizar con SonarQube') {
+        stage('Build') {
             steps {
-                echo "🚀 Ejecutando análisis SonarQube..."
-                withSonarQubeEnv('SonarQube') {
-                    sh '''
-                        sonar-scanner \
-                        -Dsonar.projectKey=pruebasJen_sonar \
-                        -Dsonar.sources=. \
-                        -Dsonar.host.url=$SONAR_HOST_URL \
-                        -Dsonar.login=$SONARQUBE
-                    '''
+                sh 'mvn clean package'
+            }
+        }
+
+        stage('SonarQube Analysis') {
+            steps {
+                withSonarQubeEnv("${SONARQUBE_ENV}") {
+                    sh 'mvn sonar:sonar'
                 }
             }
         }
-    }
 
-    post {
-        success {
-            echo "✅ Análisis enviado correctamente a SonarQube"
-        }
-        failure {
-            echo "❌ Falló el análisis SonarQube, revisa los logs"
+        stage('Quality Gate') {
+            steps {
+                script {
+                    timeout(time: 3, unit: 'MINUTES') {
+                        waitForQualityGate abortPipeline: true
+                    }
+                }
+            }
         }
     }
 }
