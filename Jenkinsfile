@@ -1,32 +1,26 @@
 pipeline {
     agent any
 
-    tools {
-        maven 'Maven3'
-        jdk 'JDK17'
-    }
-
     environment {
-        SONARQUBE_ENV = 'SonarQube' // Nombre del servidor Sonar configurado en Jenkins
+        SONARQUBE_ENV = 'SonarQube'
+        SCANNER_HOME = tool 'SonarScanner'
     }
 
     stages {
         stage('Checkout') {
             steps {
-               git branch: 'main', url: 'https://github.com/MOG778/pruebasJen_sonar.git'
-            }
-        }
-
-        stage('Build') {
-            steps {
-                sh 'mvn clean package'
+                git branch: 'main', url: 'https://github.com/MOG778/pruebasJen_sonar.git'
             }
         }
 
         stage('SonarQube Analysis') {
             steps {
                 withSonarQubeEnv("${SONARQUBE_ENV}") {
-                    sh 'mvn sonar:sonar'
+                    sh "${SCANNER_HOME}/bin/sonar-scanner \
+                        -Dsonar.projectKey=pruebasJen_sonar \
+                        -Dsonar.sources=. \
+                        -Dsonar.host.url=http://sonarqube:9000 \
+                        -Dsonar.login=<TOKEN_AQUI>"
                 }
             }
         }
