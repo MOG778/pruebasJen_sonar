@@ -51,7 +51,7 @@ pipeline {
                                            "-Dsonar.sources=. " + 
                                            "-Dsonar.sourceEncoding=UTF-8 " + 
                                            "-Dsonar.host.url=http://172.18.0.1:9000" + // ¡CAMBIO CLAVE!
-                                           "-Dsonar.login=miTokenSecreto" // <--- REEMPLAZA ESTO
+                                           "-Dsonar.login=sqa_24fc3efd9d83c178d8ad19e9cf1a42a65090044c" // <--- REEMPLAZA ESTO
 
                         echo "DEBUG: Comando SH a ejecutar: ${sonarCommand}"
                         // Ejecución del comando
