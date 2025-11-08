@@ -21,10 +21,7 @@ pipeline {
         stage('Diagnóstico Scanner') {
             steps {
                 echo '🔍 Verificando instalación de SonarScanner...'
-                sh """
-                    echo 'Ruta del scanner: $SCANNER_HOME'
-                    ls -l $SCANNER_HOME/bin
-                """
+                sh "echo 'Ruta del scanner: $SCANNER_HOME'; ls -l $SCANNER_HOME/bin"
             }
         }
 
@@ -32,18 +29,17 @@ pipeline {
             steps {
                 echo '🚀 Ejecutando análisis con SonarQube...'
                 withSonarQubeEnv("${SONARQUBE_ENV}") {
+                    // 👉 Sin saltos de línea ni backslashes
                     sh """
-                        $SCANNER_HOME/bin/sonar-scanner \
-                        -Dsonar.projectKey=pruebasJen_sonar \
+                        $SCANNER_HOME/bin/sonar-scanner -Dsonar.projectKey=pruebasJen_sonar \
                         -Dsonar.projectName='Pruebas Jenkins Sonar' \
                         -Dsonar.projectVersion=1.0 \
                         -Dsonar.sources=. \
                         -Dsonar.sourceEncoding=UTF-8 \
                         -Dsonar.host.url=http://sonar:9000 \
                         -Dsonar.login=<TOKEN_AQUI>
-                    """
+                    """.stripIndent()
                 }
-                echo '✅ Análisis completado correctamente'
             }
         }
 
@@ -67,4 +63,3 @@ pipeline {
         }
     }
 }
-
