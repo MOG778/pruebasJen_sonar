@@ -1,13 +1,13 @@
 pipeline {
+pipeline {
     agent any
 
     tools {
-        jdk 'JDK17'          // Nombre real configurado en Jenkins
-        maven 'Maven3'       // Nombre real configurado en Jenkins
+        jdk 'JDK17'          // Nombre configurado en Jenkins
     }
 
     environment {
-        SCANNER_HOME = tool 'SonarScanner'   // Nombre exacto del SonarScanner en Jenkins
+        SCANNER_HOME = tool 'SonarScanner'   // Nombre exacto configurado en Jenkins
     }
 
     stages {
@@ -15,13 +15,6 @@ pipeline {
             steps {
                 echo '📦 Clonando repositorio...'
                 git branch: 'main', url: 'https://github.com/MOG778/pruebasJen_sonar.git'
-            }
-        }
-
-        stage('Build') {
-            steps {
-                echo '🏗️ Compilando proyecto con Maven...'
-                sh 'mvn clean package -DskipTests'
             }
         }
 
@@ -45,7 +38,6 @@ pipeline {
                         -Dsonar.projectName="Pruebas Jenkins Sonar" \
                         -Dsonar.projectVersion=1.0 \
                         -Dsonar.sources=. \
-                        -Dsonar.java.binaries=target \
                         -Dsonar.sourceEncoding=UTF-8
                     '''
                 }
