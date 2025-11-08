@@ -44,7 +44,7 @@ pipeline {
                         -Dsonar.projectVersion=1.0 
                         -Dsonar.sources=. 
                         -Dsonar.sourceEncoding=UTF-8 
-                        -Dsonar.host.url=http://sonar:9000 
+                        -Dsonar.host.url=http://localhost:9000 
                         -Dsonar.login=<TOKEN_AQUI>
                     '''
                 }
