@@ -13,16 +13,27 @@ pipeline {
             }
         }
 
+        stage('Diagnóstico Scanner') {
+            steps {
+                sh '''
+                    echo "=== Diagnóstico SonarScanner ==="
+                    echo "Ruta del scanner: ${SCANNER_HOME}"
+                    ls -l ${SCANNER_HOME}/bin
+                    echo "================================="
+                '''
+            }
+        }
+
         stage('SonarQube Analysis') {
             steps {
                 withSonarQubeEnv("${SONARQUBE_ENV}") {
-                    sh """
+                    sh '''
                         ${SCANNER_HOME}/bin/sonar-scanner \
                         -Dsonar.projectKey=pruebasJen_sonar \
                         -Dsonar.sources=. \
                         -Dsonar.host.url=http://sonarqube:9000 \
                         -Dsonar.login=<TOKEN_AQUI>
-                    """.stripIndent()
+                    '''
                 }
             }
         }
