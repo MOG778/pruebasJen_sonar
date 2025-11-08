@@ -32,8 +32,8 @@ stage('SonarQube Analysis') {
     steps {
         echo '🚀 Ejecutando análisis con SonarQube...'
         withSonarQubeEnv("${SONARQUBE_ENV}") {
-            sh '''#!/bin/bash
-                "$SCANNER_HOME/bin/sonar-scanner" \
+            sh '''
+                ${SCANNER_HOME}/bin/sonar-scanner \
                 -Dsonar.projectKey=pruebasJen_sonar \
                 -Dsonar.projectName=PruebasJenkinsSonar \
                 -Dsonar.projectVersion=1.0 \
