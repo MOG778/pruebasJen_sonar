@@ -39,27 +39,26 @@ pipeline {
         }
 
         stage('SonarQube Analysis') {
-            steps {
-                echo '🚀 Ejecutando análisis con SonarQube...'
-                withSonarQubeEnv("${SONARQUBE_ENV}") {
-                    script { // <--- BLOQUE SCRIPT: Necesario para usar 'def' y construir la cadena de forma segura
-                        // CORRECCIÓN FINAL: Usamos 127.0.0.1 para forzar IPv4 y evitar el error [0:0:0:0:0:0:0:1]
-                        def sonarCommand = "${SCANNER_HOME}/bin/sonar-scanner " + 
-                                           "-Dsonar.projectKey=pruebasJen_sonar " + 
-                                           "-Dsonar.projectName=PruebasJenkinsSonar " + 
-                                           "-Dsonar.projectVersion=1.0 " + 
-                                           "-Dsonar.sources=. " + 
-                                           "-Dsonar.sourceEncoding=UTF-8 " + 
-                                           "-Dsonar.host.url=http://172.18.0.1:9000" + // ¡CAMBIO CLAVE!
-                                           "-Dsonar.login=sqa_24fc3efd9d83c178d8ad19e9cf1a42a65090044c" // <--- REEMPLAZA ESTO
-
-                        echo "DEBUG: Comando SH a ejecutar: ${sonarCommand}"
-                        // Ejecución del comando
-                        sh sonarCommand 
-                    }
-                }
+    steps {
+        echo '🚀 Ejecutando análisis con SonarQube...'
+        withSonarQubeEnv("${SONARQUBE_ENV}") {
+            script {
+                // CORRECCIÓN: Se añade el espacio faltante después del puerto 9000
+                def sonarCommand = "${SCANNER_HOME}/bin/sonar-scanner " + 
+                                   "-Dsonar.projectKey=pruebasJen_sonar " + 
+                                   "-Dsonar.projectName=PruebasJenkinsSonar " + 
+                                   "-Dsonar.projectVersion=1.0 " + 
+                                   "-Dsonar.sources=. " + 
+                                   "-Dsonar.sourceEncoding=UTF-8 " + 
+                                   "-Dsonar.host.url=http://172.18.0.1:9000 " + // <--- ¡ESPACIO AÑADIDO AQUÍ!
+                                   "-Dsonar.login=sqa_24fc3efd9d83c178d8ad19e9cf1a42a65090044c" // <--- Este parámetro comenzará con un espacio
+                                   
+                echo "DEBUG: Comando SH a ejecutar: ${sonarCommand}"
+                sh sonarCommand 
             }
         }
+    }
+}
 
         stage('Quality Gate') {
             steps {
