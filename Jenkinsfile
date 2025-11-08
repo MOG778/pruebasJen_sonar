@@ -35,16 +35,16 @@ pipeline {
                 withSonarQubeEnv("${SONARQUBE_ENV}") {
                     // Usamos comillas triples dobles ("""...""") y barras invertidas (\) 
                     // para asegurar la expansión de variables y la ejecución de un único comando shell.
-                    sh """
-                        ${SCANNER_HOME}/bin/sonar-scanner \\
-                        -Dsonar.projectKey=pruebasJen_sonar \\
-                        -Dsonar.projectName=PruebasJenkinsSonar \\
-                        -Dsonar.projectVersion=1.0 \\
-                        -Dsonar.sources=. \\
-                        -Dsonar.sourceEncoding=UTF-8 \\
-                        -Dsonar.host.url=http://localhost:9000 \\
+                    sh '''
+                        ${SCANNER_HOME}/bin/sonar-scanner
+                        -Dsonar.projectKey=pruebasJen_sonar
+                        -Dsonar.projectName=PruebasJenkinsSonar
+                        -Dsonar.projectVersion=1.0
+                        -Dsonar.sources=.
+                        -Dsonar.sourceEncoding=UTF-8
+                        -Dsonar.host.url=http://localhost:9000
                         -Dsonar.login=<TOKEN_AQUI>
-                    """
+                    '''
                 }
             }
         }
