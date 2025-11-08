@@ -29,24 +29,16 @@ pipeline {
             }
         }
 
-        stage('SonarQube Analysis') {
-            steps {
-                echo '🚀 Ejecutando análisis con SonarQube...'
-                withSonarQubeEnv("${SONARQUBE_ENV}") {
-                    // CORRECCIÓN FINAL: Usando la concatenación de cadenas de Groovy para asegurar 
-                    // que 'sh' reciba una única línea de comando con todos los argumentos.
-                    sh "${SCANNER_HOME}/bin/sonar-scanner " + 
-                       "-Dsonar.projectKey=pruebasJen_sonar " + 
-                       "-Dsonar.projectName=PruebasJenkinsSonar " + 
-                       "-Dsonar.projectVersion=1.0 " + 
-                       "-Dsonar.sources=. " + 
-                       "-Dsonar.sourceEncoding=UTF-8 " + 
-                       "-Dsonar.host.url=http://localhost:9000 " + 
-                       "-Dsonar.login=<TOKEN_AQUI>"
-                }
-            }
+stage('SonarQube Analysis') {
+    steps {
+        echo '🚀 Ejecutando análisis con SonarQube...'
+        withSonarQubeEnv("${SONARQUBE_ENV}") {
+            // USANDO LA FORMA MÁS ROBUSTA: Comando en una sola línea física dentro de comillas simples
+            // Esto evita cualquier problema de salto de línea, escape o concatenación.
+            sh " ${SCANNER_HOME}/bin/sonar-scanner -Dsonar.projectKey=pruebasJen_sonar -Dsonar.projectName=PruebasJenkinsSonar -Dsonar.projectVersion=1.0 -Dsonar.sources=. -Dsonar.sourceEncoding=UTF-8 -Dsonar.host.url=http://localhost:9000 -Dsonar.login=<TOKEN_AQUI>"
         }
-
+    }
+}
         stage('Quality Gate') {
             steps {
                 timeout(time: 2, unit: 'MINUTES') {
