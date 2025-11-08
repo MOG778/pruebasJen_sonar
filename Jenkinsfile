@@ -33,9 +33,16 @@ stage('SonarQube Analysis') {
     steps {
         echo '🚀 Ejecutando análisis con SonarQube...'
         withSonarQubeEnv("${SONARQUBE_ENV}") {
-            // USANDO LA FORMA MÁS ROBUSTA: Comando en una sola línea física dentro de comillas simples
-            // Esto evita cualquier problema de salto de línea, escape o concatenación.
-            sh " ${SCANNER_HOME}/bin/sonar-scanner -Dsonar.projectKey=pruebasJen_sonar -Dsonar.projectName=PruebasJenkinsSonar -Dsonar.projectVersion=1.0 -Dsonar.sources=. -Dsonar.sourceEncoding=UTF-8 -Dsonar.host.url=http://localhost:9000 -Dsonar.login=<TOKEN_AQUI>"
+            // SOLUCIÓN MÁS ROBUSTA: Construye la cadena completa en Groovy usando comillas dobles
+            // para permitir la interpolación (${...}), asegurando un espacio después de cada valor.
+            sh "${SCANNER_HOME}/bin/sonar-scanner " + 
+               "-Dsonar.projectKey=pruebasJen_sonar " + 
+               "-Dsonar.projectName=PruebasJenkinsSonar " + 
+               "-Dsonar.projectVersion=1.0 " + 
+               "-Dsonar.sources=. " + 
+               "-Dsonar.sourceEncoding=UTF-8 " + 
+               "-Dsonar.host.url=http://localhost:9000 " + 
+               "-Dsonar.login=<TOKEN_AQUI>"
         }
     }
 }
