@@ -28,23 +28,23 @@ pipeline {
             }
         }
 
-        stage('SonarQube Analysis') {
-            steps {
-                echo '🚀 Ejecutando análisis con SonarQube...'
-                withSonarQubeEnv("${SONARQUBE_ENV}") {
-                    sh '''
-                        "$SCANNER_HOME/bin/sonar-scanner" \
-                        -Dsonar.projectKey=pruebasJen_sonar \
-                        -Dsonar.projectName=PruebasJenkinsSonar \
-                        -Dsonar.projectVersion=1.0 \
-                        -Dsonar.sources=. \
-                        -Dsonar.sourceEncoding=UTF-8 \
-                        -Dsonar.host.url=http://sonar:9000 \
-                        -Dsonar.login=<TOKEN_AQUI>
-                    '''
-                }
-            }
+stage('SonarQube Analysis') {
+    steps {
+        echo '🚀 Ejecutando análisis con SonarQube...'
+        withSonarQubeEnv("${SONARQUBE_ENV}") {
+            sh '''#!/bin/bash
+                "$SCANNER_HOME/bin/sonar-scanner" \
+                -Dsonar.projectKey=pruebasJen_sonar \
+                -Dsonar.projectName=PruebasJenkinsSonar \
+                -Dsonar.projectVersion=1.0 \
+                -Dsonar.sources=. \
+                -Dsonar.sourceEncoding=UTF-8 \
+                -Dsonar.host.url=http://sonar:9000 \
+                -Dsonar.login=<TOKEN_AQUI>
+            '''
         }
+    }
+}
 
         stage('Quality Gate') {
             steps {
