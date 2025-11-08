@@ -29,20 +29,19 @@ pipeline {
             }
         }
 
+// Definir una variable para el comando completo para depuración
+def sonarCommand = "${SCANNER_HOME}/bin/sonar-scanner -Dsonar.projectKey=pruebasJen_sonar -Dsonar.projectName=PruebasJenkinsSonar -Dsonar.projectVersion=1.0 -Dsonar.sources=. -Dsonar.sourceEncoding=UTF-8 -Dsonar.host.url=http://localhost:9000 -Dsonar.login=<TOKEN_AQUI>"
+
 stage('SonarQube Analysis') {
     steps {
         echo '🚀 Ejecutando análisis con SonarQube...'
         withSonarQubeEnv("${SONARQUBE_ENV}") {
-            // SOLUCIÓN MÁS ROBUSTA: Construye la cadena completa en Groovy usando comillas dobles
-            // para permitir la interpolación (${...}), asegurando un espacio después de cada valor.
-            sh "${SCANNER_HOME}/bin/sonar-scanner " + 
-               "-Dsonar.projectKey=pruebasJen_sonar " + 
-               "-Dsonar.projectName=PruebasJenkinsSonar " + 
-               "-Dsonar.projectVersion=1.0 " + 
-               "-Dsonar.sources=. " + 
-               "-Dsonar.sourceEncoding=UTF-8 " + 
-               "-Dsonar.host.url=http://localhost:9000 " + 
-               "-Dsonar.login=<TOKEN_AQUI>"
+            // SOLUCIÓN FINAL: Ejecución explícita del comando completo.
+            // Primero, imprimimos el comando para verificar que sea correcto.
+            echo "DEBUG: Comando SH a ejecutar: ${sonarCommand}"
+            
+            // Usamos 'sh' con el comando ya construido en una variable.
+            sh sonarCommand 
         }
     }
 }
