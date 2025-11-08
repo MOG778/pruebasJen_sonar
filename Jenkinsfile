@@ -2,13 +2,12 @@ pipeline {
     agent any
 
     tools {
-        // Asegúrate que estos nombres coincidan con los configurados en Jenkins
-        jdk 'JAVA_HOME'
-        maven 'MAVEN_HOME'
+        jdk 'JDK17'          // Nombre real configurado en Jenkins
+        maven 'Maven3'       // Nombre real configurado en Jenkins
     }
 
     environment {
-        SCANNER_HOME = tool 'SonarScanner'   // Nombre del Sonar Scanner configurado en Jenkins
+        SCANNER_HOME = tool 'SonarScanner'   // Nombre exacto del SonarScanner en Jenkins
     }
 
     stages {
