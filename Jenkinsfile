@@ -2,11 +2,12 @@ pipeline {
     agent any
 
     tools {
-        jdk 'JDK17'          // Nombre configurado en Jenkins
+        jdk 'JDK17' // Debe coincidir con el nombre configurado en Jenkins
     }
 
     environment {
-        SCANNER_HOME = tool 'SonarScanner'   // Nombre exacto configurado en Jenkins
+        SONARQUBE_ENV = 'SONAR' // Nombre exacto de tu servidor en Jenkins > Configuración Global > SonarQube Servers
+        SCANNER_HOME = tool 'SonarScanner'
     }
 
     stages {
@@ -30,14 +31,16 @@ pipeline {
         stage('SonarQube Analysis') {
             steps {
                 echo '🚀 Ejecutando análisis con SonarQube...'
-                withSonarQubeEnv('SONAR') {
+                withSonarQubeEnv("${SONARQUBE_ENV}") {
                     sh '''
                         $SCANNER_HOME/bin/sonar-scanner \
                         -Dsonar.projectKey=pruebasJen_sonar \
                         -Dsonar.projectName="Pruebas Jenkins Sonar" \
                         -Dsonar.projectVersion=1.0 \
                         -Dsonar.sources=. \
-                        -Dsonar.sourceEncoding=UTF-8
+                        -Dsonar.sourceEncoding=UTF-8 \
+                        -Dsonar.host.url=http://sonar:9000 \
+                        -Dsonar.login=<TOKEN_AQUI>
                     '''
                 }
                 echo '✅ Análisis completado correctamente'
