@@ -50,8 +50,7 @@ pipeline {
                                    "-Dsonar.projectVersion=1.0 " + 
                                    "-Dsonar.sources=. " + 
                                    "-Dsonar.sourceEncoding=UTF-8 " + 
-                                   "-Dsonar.host.url=http://172.18.0.1:9000 " + // <--- ¡ESPACIO AÑADIDO AQUÍ!
-                                   "-Dsonar.login=sqa_24fc3efd9d83c178d8ad19e9cf1a42a65090044c" // <--- Este parámetro comenzará con un espacio
+                                   "-Dsonar.host.url=http://10.0.2.15:9000 " + // <--- ¡ESPACIO AÑADIDO AQUÍ!
                                    
                 echo "DEBUG: Comando SH a ejecutar: ${sonarCommand}"
                 sh sonarCommand 
