@@ -11,7 +11,7 @@ pipeline {
     // 3. Variables de Entorno Globales
     environment {
         // Nombre del servidor SonarQube configurado en Jenkins > Administrar > Configurar Sistema
-        SONARQUBE_ENV = 'SONAR' 
+        SONARQUBE_ENV = 'Sonar' 
         
         // Obtenemos la ruta completa del scanner
         SCANNER_HOME = tool name: 'SonarScanner', type: 'hudson.plugins.sonar.SonarRunnerInstallation'
