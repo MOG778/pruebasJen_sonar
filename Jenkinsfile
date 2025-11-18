@@ -15,7 +15,7 @@ pipeline {
         stage('Checkout') {
             steps {
                 echo '📦 Clonando repositorio...'
-                git branch: 'main', url: 'https://github.com/MOG778/pruebasJen_sonar.git/'
+                git branch: 'main', credentialsId: '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', url: 'https://github.com/MOG778/pruebasJen_sonar.git/'
             }
         }
 
