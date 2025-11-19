@@ -7,7 +7,7 @@ pipeline {
 
     environment {
         SONARQUBE_ENV = 'SONAR'
-        SCANNER_HOME = tool name: 'Sonar', type: 'hudson.plugins.sonar.SonarRunnerInstallation'
+        SCANNER_HOME = tool name: 'SonarQ', type: 'hudson.plugins.sonar.SonarRunnerInstallation'
     }
 
     stages {
@@ -40,8 +40,8 @@ pipeline {
                         -Dsonar.projectVersion=1.0 \
                         -Dsonar.sources=. \
                         -Dsonar.sourceEncoding=UTF-8 \
-                        -Dsonar.host.url=http://10.0.2.15:9000 \
-                        -Dsonar.login=sqa_2ffa3209b08e1dade48d287e3e7026515cd9e09a
+                        -Dsonar.host.url=http://172.18.0.1:9000 \
+                        -Dsonar.login=sqa_f19355173fb0c988b1416b1a9aa96ec95543e45d
                     """
                 }
             }
